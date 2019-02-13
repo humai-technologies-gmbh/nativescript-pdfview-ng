@@ -1,0 +1,5 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" class="page"
+  xmlns:ui="nativescript-pdfview-ng">
+  <!--ui:PDFViewNg src="~/4_2.pdf" defaultpage="1"></ui:PDFViewNg-->
+  <ui:PDFViewNg src="https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf" defaultpage="1"></ui:PDFViewNg>
+</Page>

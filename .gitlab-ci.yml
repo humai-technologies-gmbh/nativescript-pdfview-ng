@@ -1,0 +1,11 @@
+build_plugin:
+  tags:
+   - nativescript-ios
+  when: manual
+  script:
+   - cd src; npm run clean
+   - cd ..; cd publish; bash pack.sh
+  artifacts:
+    paths:
+    - publish/package/*.tgz
+    expire_in: 1 day
