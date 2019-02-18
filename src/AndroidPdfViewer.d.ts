@@ -7,6 +7,45 @@ declare module com.github.barteksc.pdfviewer {
     fromUri(uri: android.net.Uri): Configurator;
     setMinimumWidth(x: number): void;
     setMinimumHeight(y: number): void;
+    jumpTo(page: number, withAnimation: boolean): void;
+    getPageCount(): number;
+    setNightMode(nightMode: boolean): void;
+    zoomTo(zoom: number): void;
+    getCurrentPage(): number;
+    setDefaultPage(defaultPage: number): void;
+    getDocumentMeta(): Meta;
+    getTableOfContents(): java.util.List<Bookmark>;
+  }
+
+  export class Meta {
+    getTitle(): string;
+    getAuthor(): string;
+    getSubject(): string;
+    getKeywords(): string;
+    getCreator(): string;
+    getProducer(): string;
+    getCreationDate(): string;
+    getModDate(): string;
+  }
+
+  export class Bookmark {
+    getChildren(): java.util.List<Bookmark>;
+    hasChildren(): boolean;
+    getTitle(): string;
+    getPageIdx(): number;
+  }
+
+  export class Link {
+    getDestPageIdx(): number;
+    getUri(): string;
+    getBounds(): RectF;
+  }
+
+  export class RectF {
+    bottom: number;
+    left: number;
+    right: number;
+    top: number;
   }
 
   export module listener {

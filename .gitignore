@@ -26,3 +26,5 @@ demo/report/report.html
 demo/report/stats.json
 
 src/platforms/android/*\.aar
+
+demo/package-lock\.json
