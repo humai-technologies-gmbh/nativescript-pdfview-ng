@@ -46,7 +46,7 @@ registerElement('PDFViewNg', () => PDFViewNg);
 | src | - | File url to a pdf file, can also be http |
 | defaultpage | "0" | Initial page number to display |
 | bookmarklabel | - | Search for a bookmark with the matching label and jump to the page |
-| bookmarkpath | - |  |
+| bookmarkpath | - | Search for a bookmark by indices within the tree structure of bookmarks |
 
 ### Class
 ```js
@@ -62,7 +62,8 @@ goToLastPage() : void;
 /// Get a list of all bookmarks in the pdf.
 getBookmarks(): Bookmark[];
 
-/// Search for bookmark that is 
+/// Search for bookmark that is exactly at the given position in the tree structure
+/// e.g.: [1,3] would mean to first get the second root bookmark (0 based index) and then get its fourth child if it exists
 getBookmarkByIndexPath(indexes: number[]): Bookmark;
 
 /// Search for all bookmarks that have the given label.
@@ -73,6 +74,9 @@ goToBookmark(bookmark: Bookmark): void;
 
 /// Get meta information author from PDF.
 getAuthor(): string;
+
+/// Get page count of currently loaded pdf
+getPageCount(): number;
 ```
 
 ## Examples
