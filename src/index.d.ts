@@ -10,6 +10,7 @@ export declare class PDFViewNg extends PDFViewNgCommon {
     goToBookmark(bookmark: Bookmark): void;
 
     getAuthor(): string;
+    getPageCount(): number;
 }
 
 export declare class Bookmark extends BookmarkCommon {

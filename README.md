@@ -63,7 +63,8 @@ goToLastPage() : void;
 getBookmarks(): Bookmark[];
 
 /// Search for bookmark that is exactly at the given position in the tree structure
-/// e.g.: [1,3] would mean to first get the second root bookmark (0 based index) and then get its fourth child if it exists
+/// e.g.: [1,3] would mean to first get the second root bookmark (0 based index) and
+/// then get its fourth child if it exists
 getBookmarkByIndexPath(indexes: number[]): Bookmark;
 
 /// Search for all bookmarks that have the given label.
