@@ -1,6 +1,6 @@
 {
     "name": "nativescript-pdfview-ng",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "A pdf viewer plugin for nativescript which uses PDFKit on ios and com.github.barteksc:android-pdf-viewer on android",
     "main": "pdfview-ng",
     "typings": "index.d.ts",
