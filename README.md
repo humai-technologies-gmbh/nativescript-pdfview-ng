@@ -78,6 +78,11 @@ getAuthor(): string;
 
 /// Get page count of currently loaded pdf
 getPageCount(): number;
+
+/// Load pdf from code.
+/// Replaces the currently loaded pdf.
+/// The promise gets resolved after loading, or rejected if something failed.
+loadPDF(src: string): Promise<any>;
 ```
 
 ## Examples
@@ -97,10 +102,29 @@ bookmarkpath: jump to the first child-bookmark of the third bookmark (bookmarks 
 ```
 
 go to the first found bookmark with the label "PAGE 4"
+```html
+<ui:PDFViewNg src="~/test.pdf" id="pdfview"></ui:PDFViewNg>
+```
 ```js
 let view:PDFViewNg = page.getViewById('pdfview');
 if (view){
     view.on("load",()=>{
+        let items = view.getBookmarksByLabel("PAGE 4");
+        console.error("found:",items);
+        view.goToBookmark(items[0]);
+    });
+}
+```
+
+dynamic loading with promises
+just use an empty src tag in the xml
+```html
+<ui:PDFViewNg id="pdfview"></ui:PDFViewNg>
+```
+```js
+let view:PDFViewNg = page.getViewById('pdfview');
+if (view){
+    view.loadPDF('~/test.pdf').then(()=>{
         let items = view.getBookmarksByLabel("PAGE 4");
         console.error("found:",items);
         view.goToBookmark(items[0]);

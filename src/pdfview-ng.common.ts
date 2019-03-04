@@ -15,6 +15,7 @@ export abstract class PDFViewNgCommon extends View {
   abstract getBookmarks(): BookmarkCommon[];
   abstract getAuthor(): string;
   abstract getPageCount(): number;
+  abstract loadPDF(src: string): Promise<any>;
 
   public goToBookmarkByPath(indexes: number[]): boolean {
     let item = this.getBookmarkByIndexPath(indexes);

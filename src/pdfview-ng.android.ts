@@ -41,7 +41,6 @@ export class Bookmark extends BookmarkCommon {
 }
 
 export class PDFViewNg extends PDFViewNgCommon {
-  private promise: Promise<void>;
   private tempFolder = fs.knownFolders.temp().getFolder("PDFViewer.temp/");
   private value_src: string;
   private value_default_page: string = "0";
@@ -80,43 +79,12 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   public onLoaded(): void {
     super.onLoaded();
-    this.loadPDF(this.value_src, parseInt(this.value_default_page));
+    this.loadPDF(this.value_src);
   }
 
-  public loadPDF(src: string, default_page: number): Promise<any> {
+  public loadPDF(src: string): Promise<any> {
+    let default_page = parseInt(this.value_default_page);
     let that = this;
-    let onLoadHandler = (() => {
-      const pdfViewRef = new WeakRef(this);
-
-      return new pdfviewer.listener.OnLoadCompleteListener({
-        loadComplete: numPages => {
-          console.log("PDFViewNg Android (Step 5) Pages loaded: " + numPages);
-
-          setTimeout(() => {
-            if (that.value_bookmark_label) {
-              console.log(
-                "PDFViewNg Android (Step 6) Go to outlinelabel: ",
-                src,
-                that.value_bookmark_label
-              );
-              that.goToBookmarkByLabel("" + that.value_bookmark_label);
-            } else if (that.value_bookmark_path) {
-              console.log(
-                "PDFViewNg Android (Step 6) Go to outlinepath: ",
-                src,
-                that.value_bookmark_path
-              );
-              that.goToBookmarkByPath(that.value_bookmark_path);
-            }
-
-            PDFViewNgCommon.notifyOfEvent(
-              PDFViewNgCommon.loadEvent,
-              pdfViewRef
-            );
-          }, 1);
-        }
-      });
-    })();
 
     if (!src || !this.android) {
       return Promise.reject("no parameters");
@@ -151,12 +119,54 @@ export class PDFViewNg extends PDFViewNgCommon {
         console.log("PDFViewNg Android (Step 4) Resolved local path: " + src);
         const uri = android.net.Uri.parse(src);
 
-        this.android
-          .fromUri(uri)
-          .onLoad(onLoadHandler)
-          .defaultPage(default_page)
-          .load();
+        return that.loadPDFInternal(uri, src, default_page);
       });
+  }
+
+  private loadPDFInternal(uri: android.net.Uri, src: string, default_page: number){
+    let that = this;
+
+    return new Promise((resolve, reject)=>{
+      let onLoadHandler = (() => {
+        const pdfViewRef = new WeakRef(this);
+
+        return new pdfviewer.listener.OnLoadCompleteListener({
+          loadComplete: numPages => {
+            console.log("PDFViewNg Android (Step 5) Pages loaded: " + numPages);
+
+            setTimeout(() => {
+              if (that.value_bookmark_label) {
+                console.log(
+                  "PDFViewNg Android (Step 6) Go to outlinelabel: ",
+                  src,
+                  that.value_bookmark_label
+                );
+                that.goToBookmarkByLabel("" + that.value_bookmark_label);
+              } else if (that.value_bookmark_path) {
+                console.log(
+                  "PDFViewNg Android (Step 6) Go to outlinepath: ",
+                  src,
+                  that.value_bookmark_path
+                );
+                that.goToBookmarkByPath(that.value_bookmark_path);
+              }
+
+              PDFViewNgCommon.notifyOfEvent(
+                PDFViewNgCommon.loadEvent,
+                pdfViewRef
+              );
+              resolve();
+            }, 1);
+          }
+        });
+      })();
+
+      this.android
+            .fromUri(uri)
+            .onLoad(onLoadHandler)
+            .defaultPage(default_page)
+            .load();
+    });
   }
 
   public getPageCount(): number {

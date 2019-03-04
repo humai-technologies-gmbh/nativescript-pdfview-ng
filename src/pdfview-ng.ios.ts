@@ -52,6 +52,14 @@ export class PDFViewNg extends PDFViewNgCommon {
     this.nativeView = value;
   }
 
+  private setTimeout(millis: number): Promise<any> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, millis);
+    });
+  }
+
   public loadPDF(src: string): Promise<any> {
     const pdfViewRef = new WeakRef(this);
     console.log("PDFViewNg ios (Step 1): ", src);
@@ -59,60 +67,64 @@ export class PDFViewNg extends PDFViewNgCommon {
     if (!src || !this.ios) {
       return Promise.reject("no parameters");
     }
-    return Promise.resolve().then(() => {
-      let url: NSURL;
-      if (src.indexOf("http://") === 0 || src.indexOf("https://") === 0) {
-        url = NSURL.URLWithString(src);
-      } else {
-        if (src.indexOf("~") >= 0) {
-          let r = fs.knownFolders.currentApp().path;
-          src = src.replace("~", r);
-        }
-        url = NSURL.fileURLWithPath(src);
-      }
-      console.log("PDFViewNg ios (Step 2) url: ", url);
-
-      let document = new PDFDocument({ URL: url });
-      if (document) {
-        that.ios.document = document;
-        that.ios.displayMode = 1;
-        that.ios.autoScales = true;
-        console.log(
-          `PDFViewNg ios (Step 3) PDF loaded (Version: ${
-            document.majorVersion
-          }.${document.minorVersion}), Fixed local path: ` + src
-        );
-
-        setTimeout(function() {
-          if (that.value_bookmark_label) {
-            console.log(
-              "PDFViewNg ios (Step 4) Go to outlinelabel: ",
-              src,
-              that.value_bookmark_label
-            );
-            that.goToBookmarkByLabel("" + that.value_bookmark_label);
-          } else if (that.value_bookmark_path) {
-            console.log(
-              "PDFViewNg ios (Step 4) Go to outlinepath: ",
-              src,
-              that.value_bookmark_path
-            );
-            that.goToBookmarkByPath(that.value_bookmark_path);
-          } else {
-            console.log(
-              "PDFViewNg ios (Step 4) Go to page: ",
-              src,
-              that.value_default_page
-            );
-            that.goToPage(parseInt(that.value_default_page));
+    return Promise.resolve()
+      .then(() => {
+        let url: NSURL;
+        if (src.indexOf("http://") === 0 || src.indexOf("https://") === 0) {
+          url = NSURL.URLWithString(src);
+        } else {
+          if (src.indexOf("~") >= 0) {
+            let r = fs.knownFolders.currentApp().path;
+            src = src.replace("~", r);
           }
+          url = NSURL.fileURLWithPath(src);
+        }
+        console.log("PDFViewNg ios (Step 2) url: ", url);
+
+        let document = new PDFDocument({ URL: url });
+        if (document) {
+          that.ios.document = document;
+          that.ios.displayMode = 1;
+          that.ios.autoScales = true;
+          console.log(
+            `PDFViewNg ios (Step 3) PDF loaded (Version: ${
+              document.majorVersion
+            }.${document.minorVersion}), Fixed local path: ` + src
+          );
+
+          // allow load to be done
+          return that.setTimeout(1);
+        } else {
+          console.error("PDFViewNg ios - could not load pdf file: " + url);
           PDFViewNgCommon.notifyOfEvent(PDFViewNgCommon.loadEvent, pdfViewRef);
-        }, 1);
-      } else {
-        console.error("PDFViewNg ios - could not load pdf file: " + url);
+          throw new Error("could not load pdf:" + url);
+        }
+      })
+      .then(() => {
+        if (that.value_bookmark_label) {
+          console.log(
+            "PDFViewNg ios (Step 4) Go to outlinelabel: ",
+            src,
+            that.value_bookmark_label
+          );
+          that.goToBookmarkByLabel("" + that.value_bookmark_label);
+        } else if (that.value_bookmark_path) {
+          console.log(
+            "PDFViewNg ios (Step 4) Go to outlinepath: ",
+            src,
+            that.value_bookmark_path
+          );
+          that.goToBookmarkByPath(that.value_bookmark_path);
+        } else {
+          console.log(
+            "PDFViewNg ios (Step 4) Go to page: ",
+            src,
+            that.value_default_page
+          );
+          that.goToPage(parseInt(that.value_default_page));
+        }
         PDFViewNgCommon.notifyOfEvent(PDFViewNgCommon.loadEvent, pdfViewRef);
-      }
-    });
+      });
   }
 
   public onLoaded(): void {
