@@ -171,6 +171,26 @@ export class PDFViewNg extends PDFViewNgCommon {
     return meta.valueForKey(PDFDocumentAuthorAttribute) as string;
   }
 
+  public getTitle(): string {
+    let meta = this.ios.document.documentAttributes;
+    return meta.valueForKey(PDFDocumentTitleAttribute) as string;
+  }
+
+  public getSubject(): string {
+    let meta = this.ios.document.documentAttributes;
+    return meta.valueForKey(PDFDocumentSubjectAttribute) as string;
+  }
+
+  public getCreationDate(): string {
+    let meta = this.ios.document.documentAttributes;
+    return meta.valueForKey(PDFDocumentCreationDateAttribute) as string;
+  }
+
+  public getCreator(): string {
+    let meta = this.ios.document.documentAttributes;
+    return meta.valueForKey(PDFDocumentCreatorAttribute) as string;
+  }
+
   public createNativeView(): Object {
     let pdfView = PDFView.new();
     return pdfView;

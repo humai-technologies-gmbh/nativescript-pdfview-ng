@@ -194,6 +194,26 @@ export class PDFViewNg extends PDFViewNgCommon {
     return meta.getAuthor();
   }
 
+  public getTitle(): string {
+    let meta = this.android.getDocumentMeta();
+    return meta.getTitle();
+  }
+
+  public getSubject(): string {
+    let meta = this.android.getDocumentMeta();
+    return meta.getSubject();
+  }
+
+  public getCreationDate(): string {
+    let meta = this.android.getDocumentMeta();
+    return meta.getCreationDate();
+  }
+
+  public getCreator(): string {
+    let meta = this.android.getDocumentMeta();
+    return meta.getCreator();
+  }
+
   public getBookmarks(): Bookmark[] {
     let list: Bookmark[] = [];
     let tableOfContents = this.android.getTableOfContents();

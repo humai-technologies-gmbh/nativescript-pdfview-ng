@@ -17,8 +17,12 @@ export function pageLoaded(args: observable.EventData) {
         view.goToBookmark(items[0]);
       }
       
-      console.log("Author:", view.getAuthor());
-      console.log("Pages:", view.getPageCount());
+      console.log("Author      : ", view.getAuthor());
+      console.log("Subject     : ", view.getSubject());
+      console.log("Title       : ", view.getTitle());
+      console.log("Creator     : ", view.getCreator());
+      console.log("CreationDate: ", view.getCreationDate());
+      console.log("Pages       : ", view.getPageCount());
     });
 
     setTimeout(()=>{

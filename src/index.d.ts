@@ -10,6 +10,10 @@ export declare class PDFViewNg extends PDFViewNgCommon {
   goToBookmark(bookmark: Bookmark): void;
 
   getAuthor(): string;
+  getTitle(): string;
+  getSubject(): string;
+  getCreationDate(): string;
+  getCreator(): string;
   getPageCount(): number;
 }
 

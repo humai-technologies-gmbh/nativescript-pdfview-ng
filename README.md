@@ -76,6 +76,15 @@ goToBookmark(bookmark: Bookmark): void;
 /// Get meta information author from PDF.
 getAuthor(): string;
 
+/// Get meta information subject from PDF.
+getSubject(): string;
+
+/// Get meta information title from PDF.
+getTitle(): string;
+
+/// Get meta information creator from PDF.
+getCreator(): string;
+
 /// Get page count of currently loaded pdf
 getPageCount(): number;
 

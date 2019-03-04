@@ -14,6 +14,11 @@ export abstract class PDFViewNgCommon extends View {
   abstract goToBookmark(bookmark: BookmarkCommon): void;
   abstract getBookmarks(): BookmarkCommon[];
   abstract getAuthor(): string;
+  abstract getTitle(): string;
+  abstract getSubject(): string;
+  abstract getCreationDate(): string;
+  abstract getCreator(): string;
+
   abstract getPageCount(): number;
   abstract loadPDF(src: string): Promise<any>;
 
