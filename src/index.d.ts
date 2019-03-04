@@ -1,6 +1,6 @@
 import { PDFViewNgCommon, BookmarkCommon } from "./pdfview-ng.common";
 export declare class PDFViewNg extends PDFViewNgCommon {
-  loadPDF(src: string, default_page: number): Promise<any>;
+  loadPDF(src: string): Promise<any>;
   goToPage(index: number): void;
   goToFirstPage(): void;
   goToLastPage(): void;

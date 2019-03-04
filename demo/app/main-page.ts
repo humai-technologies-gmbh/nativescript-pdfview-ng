@@ -22,8 +22,9 @@ export function pageLoaded(args: observable.EventData) {
     });
 
     setTimeout(()=>{
-      view.loadPDF("https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf",1).then(()=>{
+      view.loadPDF("https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf").then(()=>{
         console.log("loaded promise");
+        view.goToPage(2);
       });
     },5000);
   }
