@@ -1,8 +1,8 @@
 /// <reference path="./node_modules/tns-platform-declarations/android.d.ts" />
 
-declare module com.github.barteksc.pdfviewer {
+declare namespace com.github.barteksc.pdfviewer {
   export class PDFView extends android.view.SurfaceView {
-    constructor(x,y);
+    constructor(x, y);
     fromFile(file: java.io.File): Configurator;
     fromUri(uri: android.net.Uri): Configurator;
     setMinimumWidth(x: number): void;
@@ -48,7 +48,7 @@ declare module com.github.barteksc.pdfviewer {
     top: number;
   }
 
-  export module listener {
+  export namespace listener {
     interface IOnLoadCompleteListener {
       loadComplete(numPages: number): void;
     }

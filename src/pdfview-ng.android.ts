@@ -30,7 +30,7 @@ export class Bookmark extends BookmarkCommon {
   public getChildren(): Bookmark[] {
     let list: Bookmark[] = [];
     let nativechildren = this.android.getChildren();
-    for (let i=0;i<nativechildren.size();i++){
+    for (let i = 0; i < nativechildren.size(); i++) {
       let item = nativechildren.get(i);
       let boxed = new Bookmark();
       boxed.android = item;
@@ -62,7 +62,7 @@ export class PDFViewNg extends PDFViewNgCommon {
   }
 
   public [srcProperty.setNative](value: string) {
-    console.error("MUUUH",value);
+    console.error("MUUUH", value);
     this.value_src = value;
   }
 
@@ -71,7 +71,7 @@ export class PDFViewNg extends PDFViewNgCommon {
   }
 
   public [bookmarkPathProperty.setNative](value: string) {
-    this.value_bookmark_path = value.split(",").map(item=>parseInt(item));
+    this.value_bookmark_path = value.split(",").map(item => parseInt(item));
   }
 
   public [bookmarkLabelProperty.setNative](value: string) {
@@ -83,32 +83,43 @@ export class PDFViewNg extends PDFViewNgCommon {
     this.loadPDF(this.value_src, parseInt(this.value_default_page));
   }
 
-  public loadPDF(src: string, default_page: number) : Promise<any> {
+  public loadPDF(src: string, default_page: number): Promise<any> {
     let that = this;
     let onLoadHandler = (() => {
       const pdfViewRef = new WeakRef(this);
-  
+
       return new pdfviewer.listener.OnLoadCompleteListener({
         loadComplete: numPages => {
           console.log("PDFViewNg Android (Step 5) Pages loaded: " + numPages);
-          
-          setTimeout(()=>{
+
+          setTimeout(() => {
             if (that.value_bookmark_label) {
-              console.log("PDFViewNg Android (Step 6) Go to outlinelabel: ", src, that.value_bookmark_label);
-              that.goToBookmarkByLabel(""+that.value_bookmark_label);
-            }else if (that.value_bookmark_path){
-              console.log("PDFViewNg Android (Step 6) Go to outlinepath: ", src, that.value_bookmark_path);
+              console.log(
+                "PDFViewNg Android (Step 6) Go to outlinelabel: ",
+                src,
+                that.value_bookmark_label
+              );
+              that.goToBookmarkByLabel("" + that.value_bookmark_label);
+            } else if (that.value_bookmark_path) {
+              console.log(
+                "PDFViewNg Android (Step 6) Go to outlinepath: ",
+                src,
+                that.value_bookmark_path
+              );
               that.goToBookmarkByPath(that.value_bookmark_path);
             }
-    
-            PDFViewNgCommon.notifyOfEvent(PDFViewNgCommon.loadEvent, pdfViewRef);
-          },1);
+
+            PDFViewNgCommon.notifyOfEvent(
+              PDFViewNgCommon.loadEvent,
+              pdfViewRef
+            );
+          }, 1);
         }
       });
     })();
 
     if (!src || !this.android) {
-      return Promise.reject('no parameters');
+      return Promise.reject("no parameters");
     }
 
     return Promise.resolve()
@@ -119,9 +130,11 @@ export class PDFViewNg extends PDFViewNgCommon {
       .then(() => {
         console.log("PDFViewNg Android (Step 2) Download: " + src);
         if (src.indexOf("http://") === 0 || src.indexOf("https://") === 0) {
-          return http.getFile(src, `${this.tempFolder.path}/${Date.now()}.pdf`).then((file)=>{
-            return file.path;
-          });
+          return http
+            .getFile(src, `${this.tempFolder.path}/${Date.now()}.pdf`)
+            .then(file => {
+              return file.path;
+            });
         } else {
           return src;
         }
@@ -150,15 +163,15 @@ export class PDFViewNg extends PDFViewNgCommon {
     return this.android.getPageCount();
   }
 
-  public goToPage(index: number) : void {
+  public goToPage(index: number): void {
     this.android.jumpTo(index, false);
   }
 
-  public goToFirstPage() : void {
+  public goToFirstPage(): void {
     this.android.jumpTo(0, false);
   }
 
-  public goToLastPage() : void {
+  public goToLastPage(): void {
     this.android.jumpTo(this.android.getPageCount() - 1, false);
   }
 
@@ -174,7 +187,7 @@ export class PDFViewNg extends PDFViewNgCommon {
   public getBookmarks(): Bookmark[] {
     let list: Bookmark[] = [];
     let tableOfContents = this.android.getTableOfContents();
-    for (let i=0;i<tableOfContents.size();i++){
+    for (let i = 0; i < tableOfContents.size(); i++) {
       let item: pdfviewer.Bookmark = tableOfContents.get(i);
       let boxed = new Bookmark();
       boxed.android = item;

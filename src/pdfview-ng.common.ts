@@ -1,16 +1,16 @@
-import { Property, View } from 'tns-core-modules/ui/core/view';
+import { Property, View } from "tns-core-modules/ui/core/view";
 
 export abstract class PDFViewNgCommon extends View {
   public src: string;
-  public static loadEvent = 'load';
+  public static loadEvent = "load";
 
   constructor() {
     super();
   }
 
-  abstract goToPage(index: number) : void;
-  abstract goToFirstPage() : void;
-  abstract goToLastPage() : void;
+  abstract goToPage(index: number): void;
+  abstract goToFirstPage(): void;
+  abstract goToLastPage(): void;
   abstract goToBookmark(bookmark: BookmarkCommon): void;
   abstract getBookmarks(): BookmarkCommon[];
   abstract getAuthor(): string;
@@ -18,17 +18,17 @@ export abstract class PDFViewNgCommon extends View {
 
   public goToBookmarkByPath(indexes: number[]): boolean {
     let item = this.getBookmarkByIndexPath(indexes);
-    if (item){
+    if (item) {
       this.goToBookmark(item);
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
   public goToBookmarkByLabel(label: string): boolean {
     let items = this.getBookmarksByLabel(label);
-    if (items.length > 0){
+    if (items.length > 0) {
       this.goToBookmark(items[0]);
       return true;
     }
@@ -37,20 +37,26 @@ export abstract class PDFViewNgCommon extends View {
 
   public getBookmarksByLabel(label: string): BookmarkCommon[] {
     let retval = this.getBookmarksByLabelInternal(label, this.getBookmarks());
-    if (!retval){
+    if (!retval) {
       console.error("could not find label:", label);
     }
     return retval;
   }
 
-  private getBookmarksByLabelInternal(label: string, list: BookmarkCommon[]) : BookmarkCommon[] {
+  private getBookmarksByLabelInternal(
+    label: string,
+    list: BookmarkCommon[]
+  ): BookmarkCommon[] {
     let result = [];
-    for (let i=0;i<list.length;i++){
+    for (let i = 0; i < list.length; i++) {
       let item = list[i];
-      if ((""+item.getTitle()) === label){
+      if ("" + item.getTitle() === label) {
         result.push(item);
       } else {
-        let retval = this.getBookmarksByLabelInternal(label, item.getChildren());
+        let retval = this.getBookmarksByLabelInternal(
+          label,
+          item.getChildren()
+        );
         if (retval) {
           result = result.concat(retval);
         }
@@ -62,12 +68,12 @@ export abstract class PDFViewNgCommon extends View {
   public getBookmarkByIndexPath(indexes: number[]): BookmarkCommon {
     let current: BookmarkCommon = null;
     let list = this.getBookmarks();
-    while (indexes.length > 0){
+    while (indexes.length > 0) {
       let indexCurrent = indexes.shift();
-      if ((indexCurrent >= 0) && (indexCurrent < list.length)){
+      if (indexCurrent >= 0 && indexCurrent < list.length) {
         current = list[indexCurrent];
         list = current.getChildren();
-      }else{
+      } else {
         return null;
       }
     }
@@ -76,7 +82,7 @@ export abstract class PDFViewNgCommon extends View {
 
   public static notifyOfEvent(
     eventName: string,
-    pdfViewRef: WeakRef<PDFViewNgCommon>,
+    pdfViewRef: WeakRef<PDFViewNgCommon>
   ) {
     const viewer = pdfViewRef.get();
     if (viewer) {
@@ -92,21 +98,21 @@ export abstract class BookmarkCommon {
 }
 
 export const srcProperty = new Property<PDFViewNgCommon, string>({
-  name: 'src',
+  name: "src"
 });
 srcProperty.register(PDFViewNgCommon);
 
 export const defaultpageProperty = new Property<PDFViewNgCommon, string>({
-  name: 'defaultpage',
+  name: "defaultpage"
 });
 defaultpageProperty.register(PDFViewNgCommon);
 
 export const bookmarkPathProperty = new Property<PDFViewNgCommon, string>({
-  name: 'bookmarkpath',
+  name: "bookmarkpath"
 });
 bookmarkPathProperty.register(PDFViewNgCommon);
 
 export const bookmarkLabelProperty = new Property<PDFViewNgCommon, string>({
-  name: 'bookmarklabel',
+  name: "bookmarklabel"
 });
 bookmarkLabelProperty.register(PDFViewNgCommon);
