@@ -61,7 +61,6 @@ export class PDFViewNg extends PDFViewNgCommon {
   }
 
   public [srcProperty.setNative](value: string) {
-    console.error("MUUUH", value);
     this.value_src = value;
   }
 
