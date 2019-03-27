@@ -25,3 +25,14 @@ Added new parameters:
 <ui:PDFViewNg src="~/test.pdf" bookmarkpath="2,0"></ui:PDFViewNg>
 ```
 
+# Version 1.2
+Added methods:
+* loadPDF(src: string): Promise<any>;
+* getSubject(): string;
+* getTitle(): string;
+* getCreator(): string;
+* getCreationDate(): string;
+
+Android:
+* Added event "error". (gets triggered when loaded by pure xml-variant)
+* Added exception for downloading failed for loadPDF().

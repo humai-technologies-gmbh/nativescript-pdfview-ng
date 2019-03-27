@@ -79,7 +79,14 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   public onLoaded(): void {
     super.onLoaded();
-    this.loadPDF(this.value_src);
+    const pdfViewRef = new WeakRef(this);
+    this.loadPDF(this.value_src).catch((err) => {
+      console.error("Error on load: ", err);
+      PDFViewNgCommon.notifyOfEvent(
+        PDFViewNgCommon.errorEvent,
+        pdfViewRef
+      );
+    });
   }
 
   private async downloadFile(src: string): Promise<string> {

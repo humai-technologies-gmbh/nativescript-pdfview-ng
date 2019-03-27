@@ -3,6 +3,7 @@ import { Property, View } from "tns-core-modules/ui/core/view";
 export abstract class PDFViewNgCommon extends View {
   public src: string;
   public static loadEvent = "load";
+  public static errorEvent = "error";
 
   constructor() {
     super();

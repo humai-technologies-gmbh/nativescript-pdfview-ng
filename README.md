@@ -119,8 +119,11 @@ let view:PDFViewNg = page.getViewById('pdfview');
 if (view){
     view.on("load",()=>{
         let items = view.getBookmarksByLabel("PAGE 4");
-        console.error("found:",items);
+        console.log("found:",items);
         view.goToBookmark(items[0]);
+    });
+    view.on("error",()=>{
+        console.error("unable to load pdf");
     });
 }
 ```
@@ -135,9 +138,11 @@ let view:PDFViewNg = page.getViewById('pdfview');
 if (view){
     view.loadPDF('~/test.pdf').then(()=>{
         let items = view.getBookmarksByLabel("PAGE 4");
-        console.error("found:",items);
+        console.log("found:",items);
         view.goToBookmark(items[0]);
-    });
+    }).catch((err)=>{
+        console.error("could not load pdf: ", err);
+    })
 }
 ```
 
