@@ -11,6 +11,7 @@ import {
 import * as fs from "tns-core-modules/file-system";
 import pdfviewer = com.github.barteksc.pdfviewer;
 import * as http from "tns-core-modules/http";
+import { knownFolders } from "tns-core-modules/file-system/file-system";
 
 export class Bookmark extends BookmarkCommon {
   private nativeitem: pdfviewer.Bookmark;
@@ -81,6 +82,19 @@ export class PDFViewNg extends PDFViewNgCommon {
     this.loadPDF(this.value_src);
   }
 
+  private async downloadFile(src: string): Promise<string> {
+    let temp = knownFolders.temp().path + "/download.pdf";
+    let response = await http.request({
+      url: src,
+      method: "GET"
+    });
+    if (response.statusCode < 200 || response.statusCode >= 400){
+      throw new Error("download error, statuscode=" + response.statusCode);
+    }
+    response.content.toFile(temp);
+    return temp;
+  }
+
   public loadPDF(src: string): Promise<any> {
     let default_page = parseInt(this.value_default_page);
     let that = this;
@@ -97,11 +111,7 @@ export class PDFViewNg extends PDFViewNgCommon {
       .then(() => {
         console.log("PDFViewNg Android (Step 2) Download: " + src);
         if (src.indexOf("http://") === 0 || src.indexOf("https://") === 0) {
-          return http
-            .getFile(src, `${this.tempFolder.path}/${Date.now()}.pdf`)
-            .then(file => {
-              return file.path;
-            });
+          return this.downloadFile(src);
         } else {
           return src;
         }
@@ -122,10 +132,10 @@ export class PDFViewNg extends PDFViewNgCommon {
       });
   }
 
-  private loadPDFInternal(uri: android.net.Uri, src: string, default_page: number){
+  private loadPDFInternal(uri: android.net.Uri, src: string, default_page: number) {
     let that = this;
 
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       let onLoadHandler = (() => {
         const pdfViewRef = new WeakRef(this);
 

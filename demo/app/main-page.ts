@@ -13,10 +13,10 @@ export function pageLoaded(args: observable.EventData) {
     view.on("load", () => {
       let items = view.getBookmarksByLabel("PAGE 4");
       console.error("found:", items);
-      if (items.length > 0){
+      if (items.length > 0) {
         view.goToBookmark(items[0]);
       }
-      
+
       console.log("Author      : ", view.getAuthor());
       console.log("Subject     : ", view.getSubject());
       console.log("Title       : ", view.getTitle());
@@ -25,12 +25,16 @@ export function pageLoaded(args: observable.EventData) {
       console.log("Pages       : ", view.getPageCount());
     });
 
-    setTimeout(()=>{
-      view.loadPDF("https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf").then(()=>{
-        console.log("loaded promise");
-        view.goToPage(2);
-      });
-    },5000);
+    setTimeout(() => {
+      view
+        .loadPDF(
+          "https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf"
+        )
+        .then(() => {
+          console.log("loaded promise");
+          view.goToPage(2);
+        });
+    }, 5000);
   }
 }
 
