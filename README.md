@@ -85,6 +85,9 @@ getTitle(): string;
 /// Get meta information creator from PDF.
 getCreator(): string;
 
+/// Get meta information creator from PDF.
+getCreationDate(): string;
+
 /// Get page count of currently loaded pdf
 getPageCount(): number;
 

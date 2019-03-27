@@ -10,8 +10,8 @@ export function pageLoaded(args: observable.EventData) {
   page.bindingContext = new HelloWorldModel();
   let view: PDFViewNg = page.getViewById("pdfview");
   if (view) {
-    view.on("error", (err) => {
-      console.log("main-page.ts -> Error on load, from view event", err);
+    view.on("error", () => {
+      console.log("main-page.ts -> Error on load, from view event");
     });
     view.on("load", () => {
       let items = view.getBookmarksByLabel("PAGE 4");
@@ -31,7 +31,7 @@ export function pageLoaded(args: observable.EventData) {
     setTimeout(() => {
       view
         .loadPDF(
-          "https://blog.mozilla.org/security/files/2015/05/HTTPS-F2Q.pdf"
+          "https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf"
         )
         .then(() => {
           console.log("loaded promise");
