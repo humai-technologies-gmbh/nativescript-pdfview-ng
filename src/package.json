@@ -46,13 +46,13 @@
     "homepage": "https://github.com/humai-technologies-gmbh/nativescript-pdfview-ng",
     "readmeFilename": "README.md",
     "devDependencies": {
-        "tns-core-modules": "^5.1.0",
-        "tns-platform-declarations": "^5.1.0",
-        "typescript": "~2.8.2",
+        "tns-core-modules": "^5.4.3",
+        "tns-platform-declarations": "^5.4.3",
+        "typescript": "~3.7.5",
         "prompt": "^1.0.0",
-        "rimraf": "^2.6.2",
-        "tslint": "^5.11.0",
-        "semver": "^5.6.0"
+        "rimraf": "^2.7.1",
+        "tslint": "^5.20.1",
+        "semver": "^5.7.1"
     },
     "dependencies": {},
     "bootstrapper": "nativescript-plugin-seed"
