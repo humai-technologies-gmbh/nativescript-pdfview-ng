@@ -46,8 +46,8 @@
     "homepage": "https://github.com/humai-technologies-gmbh/nativescript-pdfview-ng",
     "readmeFilename": "README.md",
     "devDependencies": {
-        "tns-core-modules": "^5.4.3",
-        "tns-platform-declarations": "^5.4.3",
+        "@nativescript/core": "^6.3.2",
+        "tns-platform-declarations": "^6.3.2",
         "typescript": "~3.7.5",
         "prompt": "^1.0.0",
         "rimraf": "^2.7.1",
