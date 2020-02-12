@@ -36,3 +36,7 @@ Added methods:
 Android:
 * Added event "error". (gets triggered when loaded by pure xml-variant)
 * Added exception for downloading failed for loadPDF().
+
+# Version 1.3
+Added methods(iOS):
+* showExternalControler(rect: ControllerRect): void;

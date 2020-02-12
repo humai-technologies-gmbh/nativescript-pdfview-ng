@@ -22,6 +22,7 @@ export abstract class PDFViewNgCommon extends View {
 
   abstract getPageCount(): number;
   abstract loadPDF(src: string): Promise<any>;
+  abstract showExternalControler(rect: ControllerRect): void;
 
   public goToBookmarkByPath(indexes: number[]): boolean {
     let item = this.getBookmarkByIndexPath(indexes);
@@ -123,3 +124,10 @@ export const bookmarkLabelProperty = new Property<PDFViewNgCommon, string>({
   name: "bookmarklabel"
 });
 bookmarkLabelProperty.register(PDFViewNgCommon);
+
+export class ControllerRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}

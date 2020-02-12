@@ -14,7 +14,7 @@ OR
 
 copy the tgz file to your project and reference it from your package.json
 
-## Usage 
+## Usage
 
 Just add it to your page:
 
@@ -95,6 +95,11 @@ getPageCount(): number;
 /// Replaces the currently loaded pdf.
 /// The promise gets resolved after loading, or rejected if something failed.
 loadPDF(src: string): Promise<any>;
+
+/// only implemented for iOS
+/// Detect available programs for file extension and opens the interaction controller
+/// The source should contain accessible path for the application
+showExternalControler(src: string, rect: ControllerRect): void;
 ```
 
 ## Examples
@@ -147,6 +152,27 @@ if (view){
         console.error("could not load pdf: ", err);
     })
 }
+```
+
+Show controller on button tap
+```html
+<ui:PDFViewNg id="pdfview"></ui:PDFViewNg>
+<button text="Open external" tap="onButtonTap"></button>
+```
+```js
+let view:PDFViewNg = page.getViewById('pdfview');
+
+function onButtonTap(args: EventData) {
+  const button = <Button>args.object;
+  const size = button.getActualSize();
+  const position = button.getLocationOnScreen();
+  const rect = {
+    x: position.x,
+    y: position.y,
+    width: size.width,
+    height: size.height
+  };
+  view.showExternalControler(rect);
 ```
 
 ## Known bugs

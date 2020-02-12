@@ -4,7 +4,8 @@ import {
   defaultpageProperty,
   bookmarkPathProperty,
   bookmarkLabelProperty,
-  BookmarkCommon
+  BookmarkCommon,
+  ControllerRect
 } from "./pdfview-ng.common";
 import * as fs from "tns-core-modules/file-system";
 
@@ -211,4 +212,38 @@ export class PDFViewNg extends PDFViewNgCommon {
   public [bookmarkLabelProperty.setNative](value: string) {
     this.value_bookmark_label = value;
   }
+
+  public showExternalControler(rect: ControllerRect): void {
+    let controller: UIDocumentInteractionController;
+    controller = UIDocumentInteractionController.interactionControllerWithURL(NSURL.fileURLWithPath(this.src));
+    controller.delegate = new UIDocumentInteractionControllerDelegateImpl2();
+    controller.presentOpenInMenuFromRectInViewAnimated(CGRectMake(rect.x, rect.y, rect.width, rect.height), controller.delegate.documentInteractionControllerViewForPreview(controller), false);
+  }
+}
+
+class UIDocumentInteractionControllerDelegateImpl2 extends NSObject implements UIDocumentInteractionControllerDelegate {
+  public static ObjCProtocols = [UIDocumentInteractionControllerDelegate];
+
+
+  getter<T>(_this2: any, property: T | { (): T }): T {
+    if (typeof property === "function") {
+        return (<{ (): T }>property).call(_this2);
+    } else {
+        return <T>property;
+    }
+}
+
+  public getViewController(): UIViewController {
+      const app = this.getter(UIApplication, UIApplication.sharedApplication);
+      return app.keyWindow.rootViewController;
+  }
+
+  public documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) {
+      return this.getViewController();
+  }
+
+  public documentInteractionControllerViewForPreview(controller: UIDocumentInteractionController) {
+      return this.getViewController().view;
+  }
+
 }

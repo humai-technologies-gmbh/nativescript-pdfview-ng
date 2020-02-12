@@ -6,7 +6,8 @@ import {
   defaultpageProperty,
   BookmarkCommon,
   bookmarkPathProperty,
-  bookmarkLabelProperty
+  bookmarkLabelProperty,
+  ControllerRect
 } from "./pdfview-ng.common";
 import * as fs from "tns-core-modules/file-system";
 import pdfviewer = com.github.barteksc.pdfviewer;
@@ -95,7 +96,7 @@ export class PDFViewNg extends PDFViewNgCommon {
       url: src,
       method: "GET"
     });
-    if (response.statusCode < 200 || response.statusCode >= 400){
+    if (response.statusCode < 200 || response.statusCode >= 400) {
       throw new Error("download error, statuscode=" + response.statusCode);
     }
     response.content.toFile(temp);
@@ -240,5 +241,9 @@ export class PDFViewNg extends PDFViewNgCommon {
       list.push(boxed);
     }
     return list;
+  }
+
+  public showExternalControler(rect: ControllerRect): void {
+    throw new Error("Not implemented");
   }
 }

@@ -1,7 +1,12 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" class="page" loaded="pageLoaded"
   xmlns:ui="nativescript-pdfview-ng">
-  <ui:PDFViewNg src="~/test.pdf" id="pdfview"></ui:PDFViewNg>
-  <!--<ui:PDFViewNg src="~/test.pdf" bookmarklabel="PAGE 3"></ui:PDFViewNg>-->
-  <!--<ui:PDFViewNg src="~/test.pdf" bookmarkpath="2,0"></ui:PDFViewNg>-->
-  <!--<ui:PDFViewNg src="https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf" defaultpage="1"></ui:PDFViewNg>-->
+  <GridLayout columns="*,auto">
+    <ui:PDFViewNg col="0" src="~/test.pdf" id="pdfview"></ui:PDFViewNg>
+    <!--<ui:PDFViewNg src="~/test.pdf" bookmarklabel="PAGE 3"></ui:PDFViewNg>-->
+    <!--<ui:PDFViewNg src="~/test.pdf" bookmarkpath="2,0"></ui:PDFViewNg>-->
+    <!--<ui:PDFViewNg src="https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf" defaultpage="1"></ui:PDFViewNg>-->
+    <GridLayout col="1" rows="auto,*">
+      <button row="0" height="10%" text="Open external" tap="onButtonTap"></button>
+    </GridLayout>
+  </GridLayout>
 </Page>
