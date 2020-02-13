@@ -40,3 +40,7 @@ Android:
 # Version 1.3
 Added methods(iOS):
 * showExternalControler(rect: ControllerRect): void;
+
+# Version 1.3.1
+Bugfix(iOS):
+* Add methods to index;

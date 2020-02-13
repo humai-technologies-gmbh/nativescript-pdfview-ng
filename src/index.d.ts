@@ -1,4 +1,4 @@
-import { PDFViewNgCommon, BookmarkCommon } from "./pdfview-ng.common";
+import { PDFViewNgCommon, BookmarkCommon, ControllerRect } from "./pdfview-ng.common";
 export declare class PDFViewNg extends PDFViewNgCommon {
   loadPDF(src: string): Promise<any>;
   goToPage(index: number): void;
@@ -8,6 +8,7 @@ export declare class PDFViewNg extends PDFViewNgCommon {
   getBookmarkByIndexPath(indexes: number[]): Bookmark;
   getBookmarksByLabel(label: string): BookmarkCommon[];
   goToBookmark(bookmark: Bookmark): void;
+  showExternalControler(rect: ControllerRect): void;
 
   getAuthor(): string;
   getTitle(): string;
