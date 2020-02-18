@@ -7,7 +7,7 @@ import {
   BookmarkCommon,
   ControllerRect
 } from "./pdfview-ng.common";
-import * as fs from "tns-core-modules/file-system";
+import * as fs from "@nativescript/core/file-system";
 
 export class Bookmark extends BookmarkCommon {
   private nativeitem: PDFOutline;
@@ -203,6 +203,8 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   public [srcProperty.setNative](value: string) {
     this.value_src = value;
+    // update pdf view on src change
+    this.loadPDF(value);
   }
 
   public [bookmarkPathProperty.setNative](value: string) {

@@ -9,19 +9,19 @@ import {
   bookmarkLabelProperty,
   ControllerRect
 } from "./pdfview-ng.common";
-import * as fs from "tns-core-modules/file-system";
+import * as fs from "@nativescript/core/file-system";
 import pdfviewer = com.github.barteksc.pdfviewer;
-import * as http from "tns-core-modules/http";
-import { knownFolders } from "tns-core-modules/file-system/file-system";
+import pdfium = com.shockwave.pdfium;
+import * as http from "@nativescript/core/http";
 
 export class Bookmark extends BookmarkCommon {
-  private nativeitem: pdfviewer.Bookmark;
+  private nativeitem: pdfium.PdfDocument.Bookmark;
 
-  public get android(): pdfviewer.Bookmark {
+  public get android(): pdfium.PdfDocument.Bookmark {
     return this.nativeitem;
   }
 
-  public set android(value: pdfviewer.Bookmark) {
+  public set android(value: pdfium.PdfDocument.Bookmark) {
     this.nativeitem = value;
   }
 
@@ -64,6 +64,8 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   public [srcProperty.setNative](value: string) {
     this.value_src = value;
+    // update pdf view on src change
+    this.loadPDF(value);
   }
 
   public [defaultpageProperty.setNative](value: string) {
@@ -91,7 +93,7 @@ export class PDFViewNg extends PDFViewNgCommon {
   }
 
   private async downloadFile(src: string): Promise<string> {
-    let temp = knownFolders.temp().path + "/download.pdf";
+    let temp = fs.knownFolders.temp().path + "/download.pdf";
     let response = await http.request({
       url: src,
       method: "GET"
@@ -181,6 +183,8 @@ export class PDFViewNg extends PDFViewNgCommon {
       this.android
             .fromUri(uri)
             .onLoad(onLoadHandler)
+            .spacing(8)
+            .fitEachPage(true)
             .defaultPage(default_page)
             .load();
     });
@@ -235,7 +239,7 @@ export class PDFViewNg extends PDFViewNgCommon {
     let list: Bookmark[] = [];
     let tableOfContents = this.android.getTableOfContents();
     for (let i = 0; i < tableOfContents.size(); i++) {
-      let item: pdfviewer.Bookmark = tableOfContents.get(i);
+      let item: pdfium.PdfDocument.Bookmark = tableOfContents.get(i);
       let boxed = new Bookmark();
       boxed.android = item;
       list.push(boxed);
