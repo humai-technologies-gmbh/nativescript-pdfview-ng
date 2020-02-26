@@ -3,6 +3,7 @@
 import {
   PDFViewNgCommon,
   srcProperty,
+  headersProperty,
   defaultpageProperty,
   BookmarkCommon,
   bookmarkPathProperty,
@@ -12,6 +13,8 @@ import * as fs from "tns-core-modules/file-system";
 import pdfviewer = com.github.barteksc.pdfviewer;
 import * as http from "tns-core-modules/http";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
+import {ad} from "tns-core-modules/utils/utils";
+import getApplicationContext = ad.getApplicationContext;
 
 export class Bookmark extends BookmarkCommon {
   private nativeitem: pdfviewer.Bookmark;
@@ -44,6 +47,7 @@ export class Bookmark extends BookmarkCommon {
 export class PDFViewNg extends PDFViewNgCommon {
   private tempFolder = fs.knownFolders.temp().getFolder("PDFViewer.temp/");
   private value_src: string;
+  private value_headers: Map<string, string>;
   private value_default_page: string = "0";
   private value_bookmark_path: number[];
   private value_bookmark_label: string;
@@ -65,6 +69,10 @@ export class PDFViewNg extends PDFViewNgCommon {
     this.value_src = value;
   }
 
+  public [headersProperty.setNative](value: Map<string, string>) {
+    this.value_headers = value;
+  }
+
   public [defaultpageProperty.setNative](value: string) {
     this.value_default_page = value;
   }
@@ -80,7 +88,7 @@ export class PDFViewNg extends PDFViewNgCommon {
   public onLoaded(): void {
     super.onLoaded();
     const pdfViewRef = new WeakRef(this);
-    this.loadPDF(this.value_src).catch((err) => {
+    this.loadPDF(this.value_src, this.value_headers).catch((err) => {
       console.error("Error on load: ", err);
       PDFViewNgCommon.notifyOfEvent(
         PDFViewNgCommon.errorEvent,
@@ -89,11 +97,16 @@ export class PDFViewNg extends PDFViewNgCommon {
     });
   }
 
-  private async downloadFile(src: string): Promise<string> {
+  private async downloadFile(src: string, headers: Map<string, string>): Promise<string> {
+    const customHeaders = {
+      'Authorization': headers.get('Authorization')
+    };
+
     let temp = knownFolders.temp().path + "/download.pdf";
     let response = await http.request({
       url: src,
-      method: "GET"
+      method: "GET",
+      headers: customHeaders
     });
     if (response.statusCode < 200 || response.statusCode >= 400){
       throw new Error("download error, statuscode=" + response.statusCode);
@@ -102,7 +115,7 @@ export class PDFViewNg extends PDFViewNgCommon {
     return temp;
   }
 
-  public loadPDF(src: string): Promise<any> {
+  public loadPDF(src: string, headers: Map<string, string>): Promise<any> {
     let default_page = parseInt(this.value_default_page);
     let that = this;
 
@@ -118,7 +131,7 @@ export class PDFViewNg extends PDFViewNgCommon {
       .then(() => {
         console.log("PDFViewNg Android (Step 2) Download: " + src);
         if (src.indexOf("http://") === 0 || src.indexOf("https://") === 0) {
-          return this.downloadFile(src);
+          return this.downloadFile(src, headers);
         } else {
           return src;
         }

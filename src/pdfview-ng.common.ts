@@ -21,7 +21,7 @@ export abstract class PDFViewNgCommon extends View {
   abstract getCreator(): string;
 
   abstract getPageCount(): number;
-  abstract loadPDF(src: string): Promise<any>;
+  abstract loadPDF(src: string, headers: Map<string, string>): Promise<any>;
 
   public goToBookmarkByPath(indexes: number[]): boolean {
     let item = this.getBookmarkByIndexPath(indexes);
@@ -108,6 +108,11 @@ export const srcProperty = new Property<PDFViewNgCommon, string>({
   name: "src"
 });
 srcProperty.register(PDFViewNgCommon);
+
+export const headersProperty = new Property<PDFViewNgCommon, Map<string, string>>({
+    name: "headers"
+});
+headersProperty.register(PDFViewNgCommon);
 
 export const defaultpageProperty = new Property<PDFViewNgCommon, string>({
   name: "defaultpage"

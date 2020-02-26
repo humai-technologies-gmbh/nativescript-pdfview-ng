@@ -1,6 +1,7 @@
 import {
   PDFViewNgCommon,
   srcProperty,
+  headersProperty,
   defaultpageProperty,
   bookmarkPathProperty,
   bookmarkLabelProperty,
@@ -38,6 +39,7 @@ export class Bookmark extends BookmarkCommon {
 export class PDFViewNg extends PDFViewNgCommon {
   nativeView: PDFView;
   private value_src: string;
+  private value_headers: Map<string, string>;
   private value_default_page: string;
   private value_bookmark_path: number[];
   private value_bookmark_label: string;
@@ -60,7 +62,7 @@ export class PDFViewNg extends PDFViewNgCommon {
     });
   }
 
-  public loadPDF(src: string): Promise<any> {
+  public loadPDF(src: string, headers: Map<string, string>): Promise<any> {
     const pdfViewRef = new WeakRef(this);
     console.log("PDFViewNg ios (Step 1): ", src);
     let that = this;
@@ -129,7 +131,7 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   public onLoaded(): void {
     super.onLoaded();
-    this.loadPDF(this.value_src);
+    this.loadPDF(this.value_src, this.value_headers);
   }
 
   public goToPage(index: number): void {
@@ -202,6 +204,10 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   public [srcProperty.setNative](value: string) {
     this.value_src = value;
+  }
+
+  public [headersProperty.setNative](value: Map<string, string>) {
+    this.value_headers = value;
   }
 
   public [bookmarkPathProperty.setNative](value: string) {
