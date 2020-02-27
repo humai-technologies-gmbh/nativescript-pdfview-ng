@@ -97,9 +97,7 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   private async downloadFile(src: string, headers: Map<string, string>): Promise<string> {
     var customHeaders = {};
-
     headers.forEach((value, key) => customHeaders[key] = value);
-
 
     let temp = knownFolders.temp().path + "/download.pdf";
     let response = await http.request({
