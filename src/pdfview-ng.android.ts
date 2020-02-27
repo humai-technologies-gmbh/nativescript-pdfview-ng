@@ -13,8 +13,6 @@ import * as fs from "tns-core-modules/file-system";
 import pdfviewer = com.github.barteksc.pdfviewer;
 import * as http from "tns-core-modules/http";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
-import {ad} from "tns-core-modules/utils/utils";
-import getApplicationContext = ad.getApplicationContext;
 
 export class Bookmark extends BookmarkCommon {
   private nativeitem: pdfviewer.Bookmark;
@@ -98,9 +96,10 @@ export class PDFViewNg extends PDFViewNgCommon {
   }
 
   private async downloadFile(src: string, headers: Map<string, string>): Promise<string> {
-    const customHeaders = {
-      'Authorization': headers.get('Authorization')
-    };
+    var customHeaders = {};
+
+    headers.forEach((value, key) => customHeaders[key] = value);
+
 
     let temp = knownFolders.temp().path + "/download.pdf";
     let response = await http.request({
