@@ -44,3 +44,6 @@ Added methods(iOS):
 # Version 1.3.1
 Bugfix(iOS):
 * Add methods to index;
+
+# Version 2.0
+Upgrade to Nativescript 7

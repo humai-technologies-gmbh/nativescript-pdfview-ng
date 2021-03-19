@@ -1,13 +1,16 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
+        "module": "esnext",
+        "target": "es2017",
+        "moduleResolution": "node",
         "declaration": false,
         "removeComments": true,
         "noLib": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "lib": [
+            "es2018", 
+            "es2017",
             "es6",
             "dom"
         ],
