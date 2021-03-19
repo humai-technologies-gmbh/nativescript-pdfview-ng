@@ -7,7 +7,8 @@ import {
   BookmarkCommon,
   ControllerRect
 } from "./pdfview-ng.common";
-import * as fs from "tns-core-modules/file-system";
+import { knownFolders } from "@nativescript/core";
+
 
 export class Bookmark extends BookmarkCommon {
   private nativeitem: PDFOutline;
@@ -43,18 +44,18 @@ export class PDFViewNg extends PDFViewNgCommon {
   private value_bookmark_path: number[];
   private value_bookmark_label: string;
 
-  private tempFolder = fs.knownFolders.temp().getFolder("PDFViewer.temp/");
+  private tempFolder = knownFolders.temp().getFolder("PDFViewer.temp/");
 
-  public get ios() {
+  public get iosPDFView() {
     return this.nativeView as PDFView;
   }
 
-  public set ios(value) {
+  public set iosPDFView(value) {
     this.nativeView = value;
   }
 
-  private setTimeout(millis: number): Promise<any> {
-    return new Promise(resolve => {
+  private setTimeout(millis: number): Promise<void> {
+    return new Promise<void>(resolve => {
       setTimeout(() => {
         resolve();
       }, millis);
@@ -75,7 +76,7 @@ export class PDFViewNg extends PDFViewNgCommon {
           url = NSURL.URLWithString(src);
         } else {
           if (src.indexOf("~") >= 0) {
-            let r = fs.knownFolders.currentApp().path;
+            let r = knownFolders.currentApp().path;
             src = src.replace("~", r);
           }
           url = NSURL.fileURLWithPath(src);
@@ -88,8 +89,7 @@ export class PDFViewNg extends PDFViewNgCommon {
           that.ios.displayMode = 1;
           that.ios.autoScales = true;
           console.log(
-            `PDFViewNg ios (Step 3) PDF loaded (Version: ${
-              document.majorVersion
+            `PDFViewNg ios (Step 3) PDF loaded (Version: ${document.majorVersion
             }.${document.minorVersion}), Fixed local path: ` + src
           );
 
@@ -227,23 +227,23 @@ class UIDocumentInteractionControllerDelegateImpl2 extends NSObject implements U
 
   getter<T>(_this2: any, property: T | { (): T }): T {
     if (typeof property === "function") {
-        return (<{ (): T }>property).call(_this2);
+      return (<{ (): T }>property).call(_this2);
     } else {
-        return <T>property;
+      return <T>property;
     }
-}
+  }
 
   public getViewController(): UIViewController {
-      const app = this.getter(UIApplication, UIApplication.sharedApplication);
-      return app.keyWindow.rootViewController;
+    const app = this.getter(UIApplication, UIApplication.sharedApplication);
+    return app.keyWindow.rootViewController;
   }
 
   public documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) {
-      return this.getViewController();
+    return this.getViewController();
   }
 
   public documentInteractionControllerViewForPreview(controller: UIDocumentInteractionController) {
-      return this.getViewController().view;
+    return this.getViewController().view;
   }
 
 }

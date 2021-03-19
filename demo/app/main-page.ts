@@ -1,18 +1,12 @@
-import * as observable from "tns-core-modules/data/observable";
-import * as pages from "tns-core-modules/ui/page";
-import { Button } from "tns-core-modules/ui/button";
-import { EventData } from "tns-core-modules/ui/core/view";
-import { Observable } from "tns-core-modules/data/observable";
-import { getViewById } from "tns-core-modules/ui/core/view";
+import { Button, EventData, knownFolders, Observable, Page } from "@nativescript/core";
 import { PDFViewNg } from "../../src";
-import { knownFolders, File } from "tns-core-modules/file-system/file-system";
 
 let _view: PDFViewNg;
 
 // Event handler for Page 'loaded' event attached in main-page.xml
-export function pageLoaded(args: observable.EventData) {
+export function pageLoaded(args: EventData) {
   // Get the event sender
-  let page = <pages.Page>args.object;
+  let page = <Page>args.object;
   page.bindingContext = new HelloWorldModel();
   let view: PDFViewNg = page.getViewById("pdfview");
   _view = view;
