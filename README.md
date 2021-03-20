@@ -4,6 +4,7 @@ This is a simple pdf viewer plugin that uses native libraries.
 * IOS: PdfKit (https://developer.apple.com/documentation/pdfkit)
 * Android: AndroidPdfViewer (https://github.com/barteksc/AndroidPdfViewer)
 
+Plugin version 2.0.0+ is compatible and tested with Nativescript 7, for older NS versions please use previous plugin versions.
 ## Installation
 
 ```javascript
