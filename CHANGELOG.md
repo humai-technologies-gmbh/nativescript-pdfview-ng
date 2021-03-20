@@ -47,3 +47,7 @@ Bugfix(iOS):
 
 # Version 2.0
 Upgrade to Nativescript 7
+
+# Version 2.0.1
+* Adds NS7 compatibility note to readme
+* Minor refactoring change that reverts public android/ios accessors with type casts back to before NS7 upgrade
