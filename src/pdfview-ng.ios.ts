@@ -46,11 +46,12 @@ export class PDFViewNg extends PDFViewNgCommon {
 
   private tempFolder = knownFolders.temp().getFolder("PDFViewer.temp/");
 
-  public get iosPDFView() {
+  // @ts-ignore
+  public get ios() {
     return this.nativeView as PDFView;
   }
 
-  public set iosPDFView(value) {
+  public set ios(value) {
     this.nativeView = value;
   }
 

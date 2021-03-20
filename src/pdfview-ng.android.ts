@@ -46,12 +46,12 @@ export class PDFViewNg extends PDFViewNgCommon {
   private value_bookmark_path: number[];
   private value_bookmark_label: string;
 
-  
-  public get androidPDFView() {
+  // @ts-ignore
+  public get android() {
     return this.nativeView as pdfviewer.PDFView;
   }
 
-  public set androidPDFView(value) {
+  public set android(value) {
     this.nativeView = value;
   }
 
